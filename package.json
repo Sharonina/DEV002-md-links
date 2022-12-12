@@ -4,6 +4,19 @@
   "engines": {
     "node": ">=16.x"
   },
+  "keywords":[
+    "JavaScript",
+    "Command Line",
+    "Node",
+    "MarkDown"
+  ],
+  "author": "Sharon Arana",
+  "bin":{
+    "say-hello": "./cli.js"
+  },
+  "devDependencies": {
+    "axios": "^1.2.1"
+  },
   "bootcamp": {
     "createdAt": "2022-11-30T13:40:29.636Z",
     "version": "5.5.0",
@@ -11,8 +24,5 @@
   },
   "dependencies": {
     "line-reader": "^0.4.0"
-  },
-  "devDependencies": {
-    "axios": "^1.2.1"
   }
 }
