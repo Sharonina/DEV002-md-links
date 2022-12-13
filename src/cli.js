@@ -163,7 +163,7 @@ function getValidate(links) {
   return getValidatePromise;
 }
 
-function inicial(route, validateUrl) {
+function mdlinks(route, validateUrl) {
   isRouteValid(route)
     .then((isValid) => {
       if (isValid) {
@@ -199,4 +199,4 @@ function inicial(route, validateUrl) {
     })
 }
 
-inicial(route);
+module.exports = mdlinks
