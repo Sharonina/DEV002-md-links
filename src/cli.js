@@ -199,4 +199,12 @@ function mdlinks(route, validateUrl) {
     })
 }
 
-module.exports = mdlinks
+/* module.exports = {
+  ValidateRoute: isRouteValid(),
+  KindOfFile: isDirectoryOrFile(),
+}
+module.exports = mdlinks */
+
+module.exports = {
+  mdlinks, isRouteValid, isDirectoryOrFile, markDownFile, isThereAnyMarkDown, findLinksFiles, findLinks, getValidate
+}

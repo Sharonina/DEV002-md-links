@@ -10,13 +10,16 @@
     "commit": "51e941edf1cc991930aefd7dd9c406a7c43741c1"
   },
   "bin": {
-    "md-link": "./mdlink.js"
+    "md-link": "./md-link.js"
   },
   "dependencies": {
-    "esm": "^3.2.25",
-    "line-reader": "^0.4.0"
+    "esm": "^3.2.25"
   },
   "devDependencies": {
-    "axios": "^1.2.1"
+    "axios": "^1.2.1",
+    "mocha": "^10.2.0"
+  },
+  "scripts": {
+    "test": "jest --coverage --verbose"
   }
 }
