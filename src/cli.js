@@ -39,7 +39,6 @@ function markDownFile(route) {
     if (path.extname(route) == ".md") {
       mdFiles.push(route);
     }
-
     if (mdFiles.length >= 1) {
       resolve(true);
     } else {
@@ -184,16 +183,18 @@ function mdlinks(route, validateUrl) {
                   .catch(reject);
               });
             } else {
-              markDownFile(route).then((isThereMarkdown) => {
-                findLinks(mdFiles, true).then((linkObject) => {
-                  if (!validateUrl) {
-                    resolve(linkObject);
-                  }
-                  getValidate(linkObject).then((linkArray) =>
-                    resolve(linkArray)
-                  );
-                });
-              });
+              markDownFile(route)
+                .then((isThereMarkdown) => {
+                  findLinks(mdFiles, true).then((linkObject) => {
+                    if (!validateUrl) {
+                      resolve(linkObject);
+                    }
+                    getValidate(linkObject).then((linkArray) =>
+                      resolve(linkArray)
+                    );
+                  });
+                })
+                .catch((e) => console.log("No es un .md"));
             }
           });
         }
@@ -204,7 +205,7 @@ function mdlinks(route, validateUrl) {
       });
   });
   return mdLinksPromise.then((response) => {
-    console.log(response); //descomentaaaaar
+    /* console.log(response); */ //descomentaaaaar
     return response;
   });
 }
