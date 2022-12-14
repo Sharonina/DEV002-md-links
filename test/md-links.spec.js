@@ -26,22 +26,69 @@ const miniListLinks = [
   {
     name: "Generalidades del protocolo HTTP - MDN",
     url: "https://developer.mozilla.org/es/docs/Web/HTTP/Overview",
-    linkRoute: "files/objetivos_aprendizaje/http.md",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
   },
   {
     name: "Mensajes HTTP - MDN",
     url: "https://developer.mozilla.org/es/docs/Web/HTTP/Messages",
-    linkRoute: "files/objetivos_aprendizaje/http.md",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
   },
   {
     name: "Códigos de estado de respuesta HTTP - MDN",
     url: "https://developer.mozilla.org/es/docs/Web/HTTP/Status",
-    linkRoute: "files/objetivos_aprendizaje/http.md",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
   },
   {
     name: "The Complete Guide to Status Codes for Meaningful ReST APIs - dev.to",
     url: "https://dev.to/khaosdoctor/the-complete-guide-to-status-codes-for-meaningful-rest-apis-1-5c5",
-    linkRoute: "files/objetivos_aprendizaje/http.md",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
+  },
+];
+const validateMiniListLinks2 = [
+  {
+    name: "Generalidades del protocolo HTTP - MDN",
+    url: "https://developer.mozilla.org/es/docs/Web/HTTP/Overview",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
+    valid: { responseCode: "Z_BUF_ERROR", statusText: "Failed" },
+  },
+  {
+    name: "Mensajes HTTP - MDN",
+    url: "https://developer.mozilla.org/es/docs/Web/HTTP/Messages",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
+    valid: { responseCode: "Z_BUF_ERROR", statusText: "Failed" },
+  },
+  {
+    name: "Códigos de estado de respuesta HTTP - MDN",
+    url: "https://developer.mozilla.org/es/docs/Web/HTTP/Status",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
+    valid: { responseCode: "Z_BUF_ERROR", statusText: "Failed" },
+  },
+  {
+    name: "The Complete Guide to Status Codes for Meaningful ReST APIs - dev.to",
+    url: "https://dev.to/khaosdoctor/the-complete-guide-to-status-codes-for-meaningful-rest-apis-1-5c5",
+    linkRoute: "./files/objetivos_aprendizaje/http.md",
+    valid: { responseCode: 200, statusText: "OK" },
+  },
+];
+
+const otherMiniList = [
+  {
+    name: "Markdown",
+    url: "https://es.wikipedia.org/wiki/Markdown",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
+  },
+  {
+    name: "Node.js",
+    url: "https://nodejs.org/",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
+  },
+  {
+    name: "md-links",
+    url: "https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
   },
 ];
 
@@ -71,7 +118,6 @@ const validateMiniListLinks = [
     valid: { responseCode: 200, statusText: "OK" },
   },
 ];
-
 //isRouteValid: test para validar si la ruta dada es valida
 describe("¿La ruta es valida?", () => {
   it(`Debe retornar true, pues la ruta es valida`, () => {
@@ -128,21 +174,13 @@ describe("¿Hay links en el archivo?", () => {
 //getValidate: Test para la validacion de los links
 describe("¿Los links de los archivos son validos o invalidos?", () => {
   it(`Debe retornar una lista de objetos que contienen la validacion de los links`, () => {
-    expect(getValidate(miniListLinks)).resolves.toEqual(validateMiniListLinks);
+    expect(getValidate(miniListLinks)).resolves.toEqual(validateMiniListLinks2);
   });
 });
 
 //mdLinks
 describe("Buscar los links en la ruta entregada", () => {
   it(`Debe retornar una lista de objetos que contienen links encontrados en archivos .md`, () => {
-    expect(mdlinks(mdFilesMiniList[0])).resolves.toEqual(miniListLinks);
-  });
-});
-
-describe("Buscar los links en la ruta entregada", () => {
-  it(`Debe retornar una lista de objetos que contienen links encontrados en archivos .md`, () => {
-    expect(mdlinks(mdFilesMiniList[0], true)).resolves.toEqual(
-      validateMiniListLinks
-    );
+    expect(mdlinks(mdFilesMiniList[0])).resolves.toEqual(otherMiniList);
   });
 });

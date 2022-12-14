@@ -97,9 +97,7 @@ function findLinksFiles(mdFilesList) {
 /* Leer archivos */
 function findLinks(file, isFile = false) {
   const findLinksPromise = new Promise(function (resolve, reject) {
-    console.log("hello", file);
     const pathResolve = isFile ? path.resolve(file[0]) : file;
-    console.log(pathResolve);
     fs.readFile(pathResolve, "utf8", (e, data) => {
       const links = data?.match(reExp);
       if (links) {
@@ -205,7 +203,10 @@ function mdlinks(route, validateUrl) {
         reject(error);
       });
   });
-  return mdLinksPromise.then((response) => console.log(response));
+  return mdLinksPromise.then((response) => {
+    /* console.log(response); */ //descomentaaaaar
+    return response;
+  });
 }
 
 module.exports = {
