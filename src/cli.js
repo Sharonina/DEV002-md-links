@@ -54,22 +54,27 @@ function markDownFile(route) {
 function isThereAnyMarkDown(route) {
   return new Promise(function (resolve, reject) {
     fs.readdir(route, (e, data) => {
-      Promise.all(data.map(fileOrDirectory => {
-        return new Promise((resolve, reject) => {
-          const statPath = path.join(route, fileOrDirectory)
-          fs.lstat(statPath, (e, stat) => {
-            if(stat.isDirectory()){
-              return isThereAnyMarkDown(statPath).then(resolve)
-            }
-            resolve([statPath])
-          })
+      Promise.all(
+        data.map((fileOrDirectory) => {
+          return new Promise((resolve, reject) => {
+            const statPath = path.join(route, fileOrDirectory);
+            fs.lstat(statPath, (e, stat) => {
+              if (stat.isDirectory()) {
+                return isThereAnyMarkDown(statPath).then(resolve);
+              }
+              resolve([statPath]);
+            });
+          });
         })
-      })).then(results => {
-        return results.reduce((all, x) => all.concat(...x), [])
-      }).then(resolve).catch(reject)
+      )
+        .then((results) => {
+          return results.reduce((all, x) => all.concat(...x), []);
+        })
+        .then(resolve)
+        .catch(reject);
     });
-  }
-)}
+  });
+}
 
 function findLinksFiles(mdFilesList, isFile = false) {
   const findLinksFilesPromise = new Promise(function (resolve, reject) {
@@ -93,9 +98,7 @@ function findLinksFiles(mdFilesList, isFile = false) {
 /* Leer archivos */
 function findLinks(file, isFile = false) {
   const findLinksPromise = new Promise(function (resolve, reject) {
-    const pathResolve = isFile
-      ? path.resolve(route)
-      : file
+    const pathResolve = isFile ? path.resolve(route) : file;
 
     fs.readFile(pathResolve, "utf8", (e, data) => {
       const links = data.match(reExp);
@@ -164,47 +167,54 @@ function getValidate(links) {
 }
 
 function mdlinks(route, validateUrl) {
-  isRouteValid(route)
-    .then((isValid) => {
-      if (isValid) {
-        isDirectoryOrFile(route).then((directoryOrFile) => {
-          if (directoryOrFile === "directory") {
-            isThereAnyMarkDown(route).then((isThereMarkdown) => {
-              findLinksFiles(isThereMarkdown).then((linkObject) => {
-                if (!validateUrl) {
-                  return console.log(linkObject);
-                }
-                getValidate(linkObject).then((linkArray) =>
-                  console.log(linkArray)
-                );
-              }).catch(console.log)
-            });
-          } else {
-            markDownFile(route).then((isThereMarkdown) => {
-              findLinksFiles(mdFiles, true).then((linkObject) => {
-                if (!validateUrl) {
-                  return console.log(linkObject);
-                }
-                getValidate(linkObject).then((linkArray) =>
-                  console.log(linkArray)
-                );
+  const mdLinksPromise = new Promise(function (resolve, reject) {
+    isRouteValid(route)
+      .then((isValid) => {
+        if (isValid) {
+          isDirectoryOrFile(route).then((directoryOrFile) => {
+            if (directoryOrFile === "directory") {
+              isThereAnyMarkDown(route).then((isThereMarkdown) => {
+                findLinksFiles(isThereMarkdown)
+                  .then((linkObject) => {
+                    if (!validateUrl) {
+                      resolve(linkObject);
+                    }
+                    getValidate(linkObject).then((linkArray) =>
+                      resolve(linkArray)
+                    );
+                  })
+                  .catch(reject);
               });
-            });
-          }
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-}
+            } else {
+              markDownFile(route).then((isThereMarkdown) => {
+                findLinksFiles(mdFiles, true).then((linkObject) => {
+                  if (!validateUrl) {
+                    resolve(linkObject);
+                  }
+                  getValidate(linkObject).then((linkArray) =>
+                    resolve(linkArray)
+                  );
+                });
+              });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
-/* module.exports = {
-  ValidateRoute: isRouteValid(),
-  KindOfFile: isDirectoryOrFile(),
+  return mdLinksPromise.then((response) => response);
 }
-module.exports = mdlinks */
 
 module.exports = {
-  mdlinks, isRouteValid, isDirectoryOrFile, markDownFile, isThereAnyMarkDown, findLinksFiles, findLinks, getValidate
-}
+  mdlinks,
+  isRouteValid,
+  isDirectoryOrFile,
+  markDownFile,
+  isThereAnyMarkDown,
+  findLinksFiles,
+  findLinks,
+  getValidate,
+};
