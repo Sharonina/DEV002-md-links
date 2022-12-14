@@ -209,11 +209,31 @@ function mdlinks(route, validateUrl) {
   });
 }
 
-/* Cantidad de links*/
-/* const totalLinks = (linksArray) => {
-  console.log(linksArray);
-  /* console.log(links.flat().length); 
-};*/
+/*Cantidad de links*/
+const totalLinks = (linksArray, showValidations) => {
+  const stats = linksArray.reduce(
+    (count, current) => {
+      const isRepeated = count.unique.includes(current.url);
+      if (isRepeated) {
+        count.repeated.push(current.url);
+      } else {
+        count.unique.push(current.url);
+        if (showValidations && current.valid.responseCode !== 200) {
+          count.invalid.push(current.url);
+        }
+      }
+      return count;
+    },
+    { unique: [], repeated: [], invalid: [] }
+  );
+
+  const response = {
+    total: stats.unique.length + stats.repeated.length,
+    unique: stats.unique.length,
+    ...(showValidations && { broken: stats.invalid.length }),
+  };
+  return response;
+};
 
 module.exports = {
   mdlinks,
@@ -224,4 +244,5 @@ module.exports = {
   findLinksFiles,
   findLinks,
   getValidate,
+  totalLinks,
 };
