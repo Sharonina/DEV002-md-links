@@ -204,10 +204,16 @@ function mdlinks(route, validateUrl) {
       });
   });
   return mdLinksPromise.then((response) => {
-    /* console.log(response); */ //descomentaaaaar
+    console.log(response); //descomentaaaaar
     return response;
   });
 }
+
+/* Cantidad de links*/
+/* const totalLinks = (linksArray) => {
+  console.log(linksArray);
+  /* console.log(links.flat().length); 
+};*/
 
 module.exports = {
   mdlinks,
