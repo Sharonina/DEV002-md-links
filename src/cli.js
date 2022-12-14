@@ -205,7 +205,6 @@ function mdlinks(route, validateUrl) {
         reject(error);
       });
   });
-
   return mdLinksPromise.then((response) => response);
 }
 
