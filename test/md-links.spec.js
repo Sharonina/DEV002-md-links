@@ -12,6 +12,7 @@ const {
   totalLinks,
 } = require("../src/cli");
 
+const nolinksFile = "./files/nohaylinks.md";
 const txtFileRoute = "./files/hola.txt";
 const mdFileRoute = "./files/preambulo.md";
 const invalidDirRoute = "./filess";
@@ -72,7 +73,29 @@ const validateMiniListLinks2 = [
     valid: { responseCode: 200, statusText: "OK" },
   },
 ];
-
+const validMinilistLinks = [
+  {
+    name: "Markdown",
+    url: "https://es.wikipedia.org/wiki/Markdown",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
+    valid: { responseCode: 200, statusText: "OK" },
+  },
+  {
+    name: "Node.js",
+    url: "https://nodejs.org/",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
+    valid: { responseCode: "Z_BUF_ERROR", statusText: "Failed" },
+  },
+  {
+    name: "md-links",
+    url: "https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg",
+    linkRoute:
+      "/Users/sharonina/Documents/laboratoria/DEV002-md-links/files/preambulo.md",
+    valid: { responseCode: 200, statusText: "OK" },
+  },
+];
 const otherMiniList = [
   {
     name: "Markdown",
@@ -170,6 +193,9 @@ describe("¿Hay links en el archivo?", () => {
   it(`Debe retornar una lista de objetos que contienen los links`, () => {
     expect(findLinks(mdFilesMiniList[0])).resolves.toEqual(miniListLinks);
   });
+  it(`Debe retornar que no hay links en la ruta, a pesar de ser un .md`, () => {
+    expect(findLinks(nolinksFile)).rejects.toEqual("no hay links");
+  });
 });
 
 //getValidate: Test para la validacion de los links
@@ -183,6 +209,11 @@ describe("¿Los links de los archivos son validos o invalidos?", () => {
 describe("Buscar los links en la ruta entregada", () => {
   it(`Debe retornar una lista de objetos que contienen links encontrados en archivos .md`, () => {
     expect(mdlinks(mdFilesMiniList[0])).resolves.toEqual(otherMiniList);
+  });
+  it(`Debe retornar una lista de objetos que contienen links encontrados en archivos .md`, () => {
+    expect(mdlinks(mdFilesMiniList[0], true)).resolves.toEqual(
+      validMinilistLinks
+    );
   });
 });
 

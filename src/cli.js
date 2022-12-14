@@ -185,21 +185,22 @@ function mdlinks(route, validateUrl) {
             } else {
               markDownFile(route)
                 .then((isThereMarkdown) => {
-                  findLinks(mdFiles, true).then((linkObject) => {
-                    if (!validateUrl) {
-                      resolve(linkObject);
-                    }
-                    getValidate(linkObject).then((linkArray) =>
-                      resolve(linkArray)
-                    );
-                  });
+                  findLinks(mdFiles, true)
+                    .then((linkObject) => {
+                      if (!validateUrl) {
+                        resolve(linkObject);
+                      }
+                      getValidate(linkObject).then((linkArray) =>
+                        resolve(linkArray)
+                      );
+                    })
+                    .catch((e) => console.log("No hay links"));
                 })
                 .catch((e) => console.log("No es un .md"));
             }
           });
         }
       })
-      .catch((e) => console.log(e))
       .catch((error) => {
         reject(error);
       });
