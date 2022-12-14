@@ -200,6 +200,7 @@ function mdlinks(route, validateUrl) {
           });
         }
       })
+      .catch((e) => console.log(e))
       .catch((error) => {
         reject(error);
       });
