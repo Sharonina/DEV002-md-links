@@ -15,7 +15,7 @@ const mdFileRoute = "./files/preambulo.md";
 const invalidDirRoute = "./filess";
 const validDirRoute = "./files";
 const specificRoute = "./files/objetivos_aprendizaje";
-const mdFilesMiniList = ["files/objetivos_aprendizaje/http.md"];
+const mdFilesMiniList = ["./files/objetivos_aprendizaje/http.md"];
 const mdFilesList = [
   "files/objetivos_aprendizaje/http.md",
   "files/objetivos_aprendizaje/js.md",

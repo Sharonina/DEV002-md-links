@@ -36,9 +36,8 @@ function isDirectoryOrFile(route) {
 /* Evaluar si la ruta fue directo a un archivo .md*/
 function markDownFile(route) {
   const markDownFilePromise = new Promise(function (resolve, reject) {
-    const fileName = path.basename(route);
-    if (path.extname(fileName) == ".md") {
-      mdFiles.push(fileName);
+    if (path.extname(route) == ".md") {
+      mdFiles.push(route);
     }
 
     if (mdFiles.length >= 1) {
@@ -76,10 +75,10 @@ function isThereAnyMarkDown(route) {
   });
 }
 
-function findLinksFiles(mdFilesList, isFile = false) {
+function findLinksFiles(mdFilesList) {
   const findLinksFilesPromise = new Promise(function (resolve, reject) {
     const linksArray = mdFilesList.map((file) => {
-      return findLinks(file, isFile).then((linkObject) => linkObject);
+      return findLinks(file).then((linkObject) => linkObject);
     });
     if (linksArray) {
       const res = Promise.allSettled(linksArray).then((links) =>
@@ -98,10 +97,11 @@ function findLinksFiles(mdFilesList, isFile = false) {
 /* Leer archivos */
 function findLinks(file, isFile = false) {
   const findLinksPromise = new Promise(function (resolve, reject) {
-    const pathResolve = isFile ? path.resolve(route) : file;
-
+    console.log("hello", file);
+    const pathResolve = isFile ? path.resolve(file[0]) : file;
+    console.log(pathResolve);
     fs.readFile(pathResolve, "utf8", (e, data) => {
-      const links = data.match(reExp);
+      const links = data?.match(reExp);
       if (links) {
         const response = links.map((link) => {
           const linkArray = link.split("]");
@@ -187,7 +187,7 @@ function mdlinks(route, validateUrl) {
               });
             } else {
               markDownFile(route).then((isThereMarkdown) => {
-                findLinksFiles(mdFiles, true).then((linkObject) => {
+                findLinks(mdFiles, true).then((linkObject) => {
                   if (!validateUrl) {
                     resolve(linkObject);
                   }
@@ -205,7 +205,7 @@ function mdlinks(route, validateUrl) {
         reject(error);
       });
   });
-  return mdLinksPromise.then((response) => response);
+  return mdLinksPromise.then((response) => console.log(response));
 }
 
 module.exports = {
