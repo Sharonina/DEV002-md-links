@@ -36,14 +36,14 @@ describe('¿La ruta es a un directorio o a un archivo?', () => {
 });
 
 //markdownFile: test para validar si la ruta fue enviada a unarchivo .md o no
-describe('La ruta es aun archivo, ¿Es .md?', () => {
+/* describe('La ruta es aun archivo, ¿Es .md?', () => {
   it(`Debe retornar true, pues la ruta es a un archivo .md`, () => {
-      expect(markDownFile(mdFileRoute)).toBe(true);
+      expect(markDownFile(mdFileRoute)).resolves.toEqual(false);
   });
 });
 
 describe('La ruta es aun archivo, ¿Es .md?', () => {
   it(`Debe retornar false, pues la ruta es a un archivo .txt`, () => {
-      expect(markDownFile(otherFileRoute)).toBe(false);
+      expect(markDownFile(otherFileRoute)).resolves.toEqual(true);
   });
-});
+}); */
