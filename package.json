@@ -21,5 +21,8 @@
   },
   "scripts": {
     "test": "jest --coverage --verbose"
+  },
+  "publishConfig": {
+    "registry": "https://github.com/Sharonina/DEV002-md-links"
   }
 }

@@ -66,7 +66,7 @@ function isThereAnyMarkDown(route) {
         })
       )
         .then((results) => {
-          return results.reduce((all, x) => all.concat(...x), []);
+          return results.reduce((all, x) => all.concat(...x), []); //uniendo un array con otros en otro array
         })
         .then(resolve)
         .catch(reject);
