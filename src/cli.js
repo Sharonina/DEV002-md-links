@@ -39,7 +39,6 @@ function markDownFile(route) {
     if (path.extname(route) == ".md") {
       mdFiles.push(route);
     }
-
     if (mdFiles.length >= 1) {
       resolve(true);
     } else {
@@ -184,36 +183,59 @@ function mdlinks(route, validateUrl) {
                   .catch(reject);
               });
             } else {
-              markDownFile(route).then((isThereMarkdown) => {
-                findLinks(mdFiles, true).then((linkObject) => {
-                  if (!validateUrl) {
-                    resolve(linkObject);
-                  }
-                  getValidate(linkObject).then((linkArray) =>
-                    resolve(linkArray)
-                  );
-                });
-              });
+              markDownFile(route)
+                .then((isThereMarkdown) => {
+                  findLinks(mdFiles, true)
+                    .then((linkObject) => {
+                      if (!validateUrl) {
+                        resolve(linkObject);
+                      }
+                      getValidate(linkObject).then((linkArray) =>
+                        resolve(linkArray)
+                      );
+                    })
+                    .catch((e) => console.log("No hay links"));
+                })
+                .catch((e) => console.log("No es un .md"));
             }
           });
         }
       })
-      .catch((e) => console.log(e))
       .catch((error) => {
         reject(error);
       });
   });
   return mdLinksPromise.then((response) => {
-    console.log(response); //descomentaaaaar
+    /* console.log(response); */ //descomentaaaaar
     return response;
   });
 }
 
-/* Cantidad de links*/
-/* const totalLinks = (linksArray) => {
-  console.log(linksArray);
-  /* console.log(links.flat().length); 
-};*/
+/*Cantidad de links*/
+const totalLinks = (linksArray, showValidations) => {
+  const stats = linksArray.reduce(
+    (count, current) => {
+      const isRepeated = count.unique.includes(current.url);
+      if (isRepeated) {
+        count.repeated.push(current.url);
+      } else {
+        count.unique.push(current.url);
+        if (showValidations && current.valid.responseCode !== 200) {
+          count.invalid.push(current.url);
+        }
+      }
+      return count;
+    },
+    { unique: [], repeated: [], invalid: [] }
+  );
+
+  const response = {
+    total: stats.unique.length + stats.repeated.length,
+    unique: stats.unique.length,
+    ...(showValidations && { broken: stats.invalid.length }),
+  };
+  return response;
+};
 
 module.exports = {
   mdlinks,
@@ -224,4 +246,5 @@ module.exports = {
   findLinksFiles,
   findLinks,
   getValidate,
+  totalLinks,
 };
