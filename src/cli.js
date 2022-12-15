@@ -201,12 +201,15 @@ function mdlinks(route, validateUrl) {
           });
         }
       })
+      .catch((e) => {
+        console.log(e);
+      })
       .catch((error) => {
         reject(error);
       });
   });
   return mdLinksPromise.then((response) => {
-    /* console.log(response); */ //descomentaaaaar
+    console.log(response); //descomentaaaaar
     return response;
   });
 }
